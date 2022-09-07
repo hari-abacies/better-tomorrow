@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/monday-sdk-js/dist/main.js"></script>
+    <title>Monday</title>
+    <style>
+      #desc img{ margin-bottom: 20px; max-width: 100%; }
+      #ifram_blk{ width: 98%; }
+    </style>
+  </head>
+<body style="padding-top: 25px; padding-left: 15px;">
+<div class="tab-content" id="charts-tabContent">
+  <div style="width: 98%;" id="desc" class="mb-2"></div>
+  <input type="hidden" value="{{ details }}" id="details">
+  <div id="ifram_blk"></div>
+  <div class="tab-pane fade show active mt-3" style="width: 98%;" id="level-1" role="tabpanel" aria-labelledby="level-1-tab">
+    {% if question %}
+    <div id="question_block_1">
+      <div id="alert_block"></div>
+      <h6>{{ question }}</h6>
+      {% for option in options %}
+      <div class="form-check mt-3">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="option_{{ loop.index }}" value="{{ option }}">
+        <label class="form-check-label" for="option_{{ loop.index }}">{{ option }}</label>
+      </div>
+      {% endfor %}
+      <button type="button" onclick="handleQuestion()" class="btn btn-success mt-4">Submit</button>
+    </div>
+    {% endif %}  
+  </div>
+</div>  
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script>
+  let details = document.getElementById('details').value;
+  var users = [];
+  let listenCount = 0;
+  let getStatus = 0;
+  var userId, bordId, currentUser, currentBadge; 
+  const monday = window.mondaySdk()
+  // console.log('{{ api_key }}');
+  monday.setToken('{{ api_key }}')
+  monday.api(`query { users { id, name, email } }`).then(res => {
+    // console.log(res);
+    users = res.data.users
+  });
+  const callback = res => {
+    // console.log(res)
+    if(res && res.data && res.data.hasOwnProperty('user')) {
+      changeTheme(res.data.theme);
+      userId = res.data.user.id;
+      bordId = res.data.boardId;
+      let idx = users.findIndex(u => u.id == userId);
+      // console.log(idx);
+      currentUser = users[idx];
+      // console.log(currentUser);
+      if(userId && bordId && currentUser && listenCount == 0) {
+        listenCount = listenCount+1;
+        passUserDetails()
+      }
+      if(userId && '{{qus_id}}' && getStatus == 0) {
+        getStatus = getStatus+1;
+        getQuizStatus()
+      }
+    }
+  };
+  monday.listen(['settings', 'context'], callback);
+  $(document).ready(function() {
+    let ifrm = '{{ iframe }}';
+    // console.log(ifrm)
+    if(ifrm.trim()){
+      // console.log("get iframe");
+      var toPlace = document.getElementById('ifram_blk');
+      var parser = new DOMParser(),
+      content = 'text/html',
+      DOM = parser.parseFromString(ifrm, content);
+      // console.log(DOM)
+      // console.log(DOM.body.childNodes[0].data)
+      toPlace.innerHTML = DOM.body.childNodes[0].data;
+    }
+    // console.log(details)
+    if(details){
+      // console.log("get Details");
+      var toPlace2 = document.getElementById('desc');
+      var parser2 = new DOMParser(),
+      content2 = 'text/html',
+      DOM2 = parser2.parseFromString(details, content2);
+      // console.log(DOM2)
+      // console.log(DOM2.body)
+      // console.log(DOM2.body.childNodes)
+      var arr = DOM2.body.childNodes;
+      var html = "";
+      if(arr && arr.length && arr.length > 0) {
+        for(var i = 0; i < arr.length; i++) {
+          // console.log(arr[i])
+          if(arr[i].outerHTML) {
+            html += `${arr[i].outerHTML}`;
+          } else if(arr[i].data) {
+            html += `<p>${arr[i].data}</p>`;
+          } else {
+            html += `${arr[i]}`;
+          }
+        }
+      }
+      toPlace2.innerHTML = html;
+    }
+    // nextQuestion();
+  });
+  function getQuizStatus() {
+    var alert_block = document.getElementById("alert_block");
+    if (userId){
+      // console.log("get quiz status")
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        redirect: 'follow'
+      };
+      fetch(`https://daily-quotes-monday.herokuapp.com/v1/monday/quiz/user-status/${userId}/{{qus_id}}`, requestOptions)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          // console.log(data)
+          var html = "";
+          if(data.quiz_status == 1) {
+            html += '<div class="alert alert-primary alert-dismissible fade show mt-2" style="width:98%" role="alert"><h5 class="text-primary m-0">You have already completed this quiz</h5>';
+            html += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            alert_block.innerHTML = html;
+          }
+        })
+        .catch(error => console.log('error', error));
+    }
+  }
+  function passUserDetails() {
+    // console.log("ids", userId, bordId)
+    if (userId && bordId){
+      // console.log("user details passed")
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      var raw = JSON.stringify({"board_id": bordId, "user_id": currentUser.id, "email": currentUser.email, "name": currentUser.name});
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+      fetch("https://daily-quotes-monday.herokuapp.com/v1/monday/user", requestOptions)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          // console.log(data)
+          currentBadge = data.badge;
+        })
+        .catch(error => console.log('error', error));
+    }
+  }
+  function handleQuestion() {
+    // console.log("submitted")
+    var checkedOp = document.querySelector('input[name="flexRadioDefault"]:checked');
+    var alert_block = document.getElementById("alert_block");
+    // console.log(checkedOp)
+    if(checkedOp && checkedOp.value) {
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      var raw = JSON.stringify({
+      "answer": checkedOp.value,
+      "user_id": userId,
+      "bord_id": bordId
+      });
+      var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+      };
+      fetch(`https://daily-quotes-monday.herokuapp.com/v1/monday/quiz/validate/{{quiz_id}}/{{qus_id}}`, requestOptions)
+      .then(response => response.text())
+      .then(function(data){
+        var data_item = JSON.parse(data)
+        // console.log(data_item);
+        var html = "";
+        if(data_item.data == "Correct answer") {
+          html += '<div class="alert alert-success alert-dismissible fade show mt-2 mb-3" style="width:98%" role="alert"><h5 class="text-success m-0">Correct Answer</h5>';
+          if('{{ description }}'){
+            html += '<p class="text-success m-0 mt-3">{{ description }}</p>';
+          } 
+          html += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+        if(data_item.data == "Wrong answer") {
+          html += '<div class="alert alert-danger alert-dismissible fade show mt-2 mb-3" style="width:98%" role="alert"><h5 class="text-danger m-0">Wrong Answer</h5>';
+          if('{{ description }}'){
+            html += '<p class="text-danger m-0 mt-3">{{ description }}</p>';
+          } 
+          html += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        }
+        alert_block.innerHTML = html;
+      })
+      .catch(error => console.log('error', error));
+    } else {
+      var html = '<div class="alert alert-warning alert-dismissible fade show mt-2 mb-3 text-warning" style="width:98%" role="alert">Please Select one option<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+      alert_block.innerHTML = html;
+    }
+  }
+  function changeTheme(theme) {
+    if(theme === "black") {
+      if(document.body.classList.contains('dark_mode')) {
+        document.body.classList.remove('dark_mode');
+        document.body.classList.add('night_mode');
+      } else document.body.classList.add('night_mode');
+    } else if(theme === "dark") {
+      if(document.body.classList.contains('night_mode')) {
+        document.body.classList.remove('night_mode');
+        document.body.classList.add('dark_mode');
+      } else document.body.classList.add('dark_mode');
+    } else if(theme === "light") {
+      if(document.body.classList.contains('night_mode')) {
+        document.body.classList.remove('night_mode');
+      }
+      if(document.body.classList.contains('dark_mode')) {
+        document.body.classList.remove('dark_mode');
+      }
+    }
+  }
+</script>
+
+</html>

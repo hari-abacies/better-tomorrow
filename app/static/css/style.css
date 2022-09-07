@@ -1,0 +1,181 @@
+body * {
+    font-family: 'Roboto', sans-serif;
+}
+.overlay-block {
+    position: absolute;
+    left: 0;
+    padding: 20px 24px 0 24px;
+    width: 100%;
+}
+.overlay-block.top {
+    top: 0;
+}
+.overlay-block.bottom {
+    bottom: 0;
+}
+.overlay-block.right {
+    top: 0;
+    right: 0;
+    left: auto;
+    background-color: rgba(255,255,255,0.7);
+    width: 225px;
+    padding: 15px;
+    border-bottom-left-radius: 10px;
+}
+.overlay-block.right img{
+    width: 100%;
+    height: auto;
+    text-shadow: 2px 2px 4px #ffffff;
+}
+.carousel-item {position: relative; overflow: hidden; }
+.carousel-item::before{
+    content:"";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(18 61 4 / 52%);
+    width:100%;
+    height: 100%;
+    background-blend-mode: multiply;
+    mix-blend-mode: multiply
+}
+.carousel-item img{ max-height: 210px; object-fit: cover; object-position: center; }
+.select2 { width: 100%; }
+.select2 .select2-selection{ height: 40px !important; }
+.select2 .select2-selection__arrow, .select2 .select2-selection__rendered { height: 40px !important; line-height: 38px !important; }
+.overlay-block * {color:#ffffff; }
+.overlay-block h6 {font-size:1.3rem; margin-bottom: 7px; text-shadow: 2px 2px 2px #222222; }
+.overlay-block h5 {font-size:1.85rem; font-weight: 500px; text-shadow: 2px 2px 2px #222222; line-height: 2.4rem; margin-bottom: 18px; overflow: hidden; max-height: 4.7rem;}
+.tab-content {margin-bottom: 20px;}
+.tab-content h4 { margin: 0 0 20px; font-size: 1.3rem; line-height: 1.6rem; }
+.tab-content h3 { margin: 0 0 20px; font-size: 1.7rem; }
+.tab-content .form-floating { margin-top:5px; margin-bottom: 20px; }
+.select2.select2-container{ width: 100% !important; }
+
+.tab-motive {margin-top: 24px;}
+.tab-motive .nav-horz .nav-item { margin-right:1.2%; }
+.tab-motive .nav-horz .nav-item a.active {background-color:#185B01; border-radius: 30px; color:#ffffff;}
+.tab-motive .nav-horz .nav-item a {background-color:#F8F8F8; border-radius: 30px; color:#000000; font-weight: 700; padding:14px 32px; line-height: 24px; font-size: 20px;}
+
+.tab-motive #actnow-tabContent {margin-top: 30px;}
+.container-fluid h3 {font-size: 1.58rem;}
+.tab-charts {margin-top: 24px;}
+.tab-charts .nav-pills { max-width: 400px; min-width: 300px; }
+.tab-charts .nav-item {margin-bottom: 20px;}
+.tab-charts .nav-item a.active {background-color:#185B01;border-radius: 30px; color:#ffffff;}
+.tab-charts .nav-item a {background-color:#F8F8F8;border-radius: 30px; color:#000000;font-weight: 300;padding: 10px 20px;line-height: 24px;font-size: 14px;}
+
+.tab-charts .tab-content {margin-left: 40px; padding:20px; background-color:#F8F8F8;flex: 30px 1 0;}
+.tab-motive #motive-tabContent { padding:20px; background-color:#F8F8F8; }
+.leaderboard{ margin-bottom: 30px; }
+.leaderboard thead{ background-color: #185B01; border-bottom: 0; }
+.leaderboard th{ color: #ffffff; text-transform: uppercase; }
+.leaderboard thead th:first-child, .leaderboard tbody td:first-child{ padding-left: 15px; }
+.leaderboard thead th:last-child, .leaderboard tbody td:last-child{ padding-right: 15px; }
+.leaderboard tbody td:first-child span{ display: inline-block; color: #ffffff; background-color: #185B01; width: 50px; height: 50px; border-radius: 50px; line-height: 50px; text-align: center; }
+.leaderboard thead th:last-child, .leaderboard tbody td:last-child { width: 130px; }
+.leaderboard tbody td:last-child img{ width: auto; height: 60px; }
+.leaderboard tbody td{ height: 80px;  vertical-align: middle; background-color: #ffffff; }
+.leaderboard tbody .user_img img{ width: 50px; height: 50px; border-radius: 50px; margin-right: 14px; } 
+.leaderboard tbody .user_img span{ font-weight: 600; }
+.btn.btn-success { background-color: #185B01; } 
+@media(min-width: 1600px) {
+    .tab-charts .nav-pills { max-width: 420px; min-width: 420px; }
+    .overlay-block h6 {font-size:1.4rem;}
+    .overlay-block h5 {font-size:2rem; line-height: 2.7rem; max-height: 5.2rem;}
+    
+}
+.container-fluid { padding-left: 38px; padding-right: 30px; }
+@media(max-width: 1199.98px) {
+    .overlay-block.right { width: 200px; }
+    .carousel-item img{ max-height: 175px; }
+    .tab-content h4{ font-size:1.1rem; }
+    .overlay-block h6 {font-size:1.2rem; }
+    .overlay-block h5 {font-size:1.5rem; line-height: 1.95rem; max-height: 4rem;}
+}
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .tab-charts .nav-pills { min-width: 240px; }
+    .tab-charts .nav-item a {
+        padding: 10px 20px;
+        line-height: 24px;
+        font-size: 14px;
+    }
+    .tab-charts .nav-item {
+        margin-bottom: 20px;
+    }
+
+    .tab-motive .nav-horz .nav-item a {
+        padding: 10px 20px;
+        line-height: 24px;
+        font-size: 14px;
+    }
+}
+.tab-motive .nav-horz .nav-item {
+    width: 32%;
+}
+@media (max-width: 767.98px) {
+    .tab-charts .nav-pills { max-width: 100%; }
+    .tab-content .form-floating{ margin-top: 12px; }
+    .overlay-block.right { width: 175px; }
+    .tab-charts {
+        display: block !important;
+    }
+    .tab-content h4 { font-size: 1rem; }
+    .tab-content h3 { font-size: 1.3rem; }
+    .tab-charts .nav-item a {
+        padding: 10px 20px;
+        line-height: 24px;
+        font-size: 14px;
+        width: 100%;
+    }
+    .tab-charts .nav-item {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+    
+    .tab-motive .nav-horz .nav-item a {
+        width: 100%;
+        padding: 10px 15px;
+        line-height: 24px;
+        font-size: 13px;
+        min-width: 100%;
+    }
+    .tab-motive .nav-horz .nav-item {
+        margin-right: 0;
+        padding-right: 10px;
+    }
+    .tab-charts .tab-content {
+        margin-left: 0;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top:1px solid #ccc;
+    }
+    .overlay-block h6 {font-size:1rem;}
+    .overlay-block h5 {font-size:1.4rem;}
+}
+
+@media (max-width: 480.98px) {
+    .tab-motive .nav-horz .nav-item a { padding: 8px 13px; }
+    .overlay-block h6 {font-size:0.8rem;}
+    .overlay-block h5 {font-size:1.1rem;}
+}
+
+/************ Dark Mode **************/
+body.dark_mode, body.dark_mode .leaderboard tbody td{ background-color: #181b34; }
+body.dark_mode *, body.dark_mode .select2-container--default .select2-selection--single .select2-selection__rendered { color: #d5d8df; }
+body.dark_mode .tab-motive .nav-horz .nav-item a, body.dark_mode .tab-charts .nav-item a, body.dark_mode .tab-charts .tab-content, body.dark_mode .tab-motive #motive-tabContent, body.dark_mode .form-control{ background-color: rgb(48,50,78); color: #d5d8df; }
+body.dark_mode .tab-motive .nav-horz .nav-item a.active, body.dark_mode .tab-charts .nav-item a.active{ background-color: #185B01; }
+body.dark_mode .select2-container--default .select2-selection--single{ background-color: transparent; }
+body.dark_mode .select2-dropdown, body.dark_mode .select2-container--default .select2-search--dropdown .select2-search__field{ background-color: rgb(48,50,78); }
+body.dark_mode .select2-container--default .select2-results__option--selected{ color: rgb(48,50,78); }
+
+
+/************ Night Mode **************/
+body.night_mode, body.night_mode .leaderboard tbody td{ background-color: #111111; }
+body.night_mode *, body.night_mode .select2-container--default .select2-selection--single .select2-selection__rendered { color: #eeeeee; }
+body.night_mode .tab-motive .nav-horz .nav-item a, body.night_mode .tab-charts .nav-item a, body.night_mode .tab-charts .tab-content, body.night_mode .tab-motive #motive-tabContent, body.night_mode .form-control{ background-color: #2c2c2c; color: #eeeeee; }
+body.night_mode .tab-motive .nav-horz .nav-item a.active, body.night_mode .tab-charts .nav-item a.active{ background-color: #185B01; }
+body.night_mode .select2-container--default .select2-selection--single{ background-color: transparent; }
+body.night_mode .select2-dropdown, body.night_mode .select2-container--default .select2-search--dropdown .select2-search__field{ background-color: #2c2c2c; }
+body.night_mode .select2-container--default .select2-results__option--selected{ color: #2c2c2c; }

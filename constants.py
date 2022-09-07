@@ -1,0 +1,12 @@
+USER_ROLE = {1: 'Super Admin', 2: 'Admin', 3: 'Staff'}
+IMAGE_EXTENSION = ['JPG', 'PNG', 'GIF', 'JPEG', 'SVG', 'PDF']
+BADGE= {0:"No Badge", 1:"Student", 2:"Admirer", 3:"Researcher", 4:"Fellowship", 5:"Scholar"}
+BOARD_NAME = 'Green'
+GROUP_LIST = ['Group 1', 'Group 2', 'Group 3']
+COLUMN_LIST = [{"title": "Quiz Completed", "column_type": "people"}, {"title": "Quiz Not Completed", "column_type": "people"}]
+ITEM_DICT = {"Group 1":['item1', 'item2'], "Group 2": ['item3', 'item4'], "Group 3": ['item5', 'item6']}
+LEADER_COLUMN = [{"title": "People", "column_type": "people"}, {"title": "Rating", "column_type": "rating"}, {"title": "Badges", "column_type": "file"}]
+LEADER_GRP = ['Student', 'Scholar', 'Researcher', 'Fellowship', 'Admirer']
+DAILY_QUOTE_COLUMN = [{"title": "Day", "column_type": "date"}] # {"title":"Quote", "column_type": "long_text"}, 
+MENTORS_COLUMN = [{"title":"Person", "column_type":"people"}, {"title":"Mentor", "column_type":"people"}, {"title":"Send Alert", "column_type":"dropdown"}]
+BADGE_PATH = {1:{"name": "student_badge.png", "path": "app/static/images/student_badge.png"}, 2: {"name": "admirer_badge.png", "path": "app/static/images/admirer_badge.png"}, 3:{"name": "researcher_badge.png", "path": "app/static/images/researcher_badge.png"}, 4: {"name": "fellowship_badge.png", "path": "app/static/images/fellowship_badge.png"}, 5: {"name": "scholar_badge.png", "path": "app/static/images/scholar_badge.png"}}
